@@ -4,7 +4,8 @@ import "components/Application.scss";
 import { useState, useEffect } from "react";
 import Appointment from "./Appointment";
 import axios from "axios";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
+
 /**
 const appointments = {
   "1": {
@@ -87,7 +88,7 @@ export default function Application(props) {
       />
     );
   });
-  
+
   return (
     <main className="layout">
       <section className="sidebar">

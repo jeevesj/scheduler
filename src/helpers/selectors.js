@@ -28,3 +28,21 @@ export function getInterview(state, interview) {
     interviewer,
   };
 }
+
+
+export function getInterviewersForDay(state, day) {
+  // Find the day object in the state.days array that matches the provided day
+  const foundDay = state.days.find((dayObj) => dayObj.name === day);
+
+  // If the day is not found or there are no interviewers, return an empty array
+  if (!foundDay || !foundDay.interviewers || foundDay.interviewers.length === 0) {
+    return [];
+  }
+
+  // Iterate through the interviewers array, look up the interviewer objects in state.interviewers, and return the array of those objects
+  const interviewersForDay = foundDay.interviewers.map(
+    (interviewerId) => state.interviewers[interviewerId]
+  );
+
+  return interviewersForDay;
+}
