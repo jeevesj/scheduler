@@ -1,9 +1,11 @@
 import React from "react";
 import DayList from "./DayList";
 import "components/Application.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Appointment from "./Appointment";
-
+import axios from "axios";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+/**
 const appointments = {
   "1": {
     id: 1,
@@ -42,37 +44,50 @@ const appointments = {
     time: "4pm",
   }
 };
-
+*/
 
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {},
+    interviewers: {},
+  });
 
-  const days = [
-    {
-      id: 1,
-      name: "Monday",
-      spots: 2,
-    },
-    {
-      id: 2,
-      name: "Tuesday",
-      spots: 5,
-    },
-    {
-      id: 3,
-      name: "Wednesday",
-      spots: 0,
-    },
-  ];
+  const setDay = day => setState({ ...state, day });
+
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+
+  useEffect(() => {
+    Promise.all([
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers"),
+    ])
+      .then((all) => {
+        setState(prev => ({
+          ...prev,
+          days: all[0].data,
+          appointments: all[1].data,
+          interviewers: all[2].data,
+        }));
+      });
+  }, []);
+
+
+  const appointmentComponents = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
+
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+      />
+    );
+  });
   
-
-  const appointmentComponents = Object.values(appointments).map(
-    (appointment) => {
-      return <Appointment key={appointment.id} {...appointment} />;
-    }
-  );
-
-
   return (
     <main className="layout">
       <section className="sidebar">
@@ -84,7 +99,7 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           
-          <DayList days={days} value={day} onChange={setDay} />
+          <DayList days={state.days} value={state.day} onChange={setDay} />
           
         </nav>
         <img
