@@ -38,9 +38,11 @@ export default function useApplicationData() {
     };
 
     return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+      const newDays = updateSpots(state.day, state.days, appointments);
       setState({
         ...state,
         appointments,
+        days: newDays,
       });
     });
   }
@@ -57,12 +59,36 @@ export default function useApplicationData() {
     };
 
     return axios.delete(`/api/appointments/${id}`).then(() => {
+      const newDays = updateSpots(state.day, state.days, appointments);
       setState({
         ...state,
         appointments,
+        days: newDays,
       });
     });
   }
+
+  function updateSpots(dayName, days, appointments) {
+  
+    const day = days.find(d => d.name === dayName);
+  
+    const spots = day.appointments.filter(appointmentId => !appointments[appointmentId].interview).length;
+  
+    const newDays = days.map(d => {
+      if (d.name === dayName) {
+        return { ...d, spots };
+      }
+      return d;
+    });
+  
+    return newDays;
+  }
+  
+
+
+
+
+
 
   return {
     state,
