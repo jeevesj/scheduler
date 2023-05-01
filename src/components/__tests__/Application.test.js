@@ -3,7 +3,6 @@ import { fireEvent } from "@testing-library/react";
 import { render, cleanup } from "@testing-library/react";
 import { waitForElement } from "@testing-library/react";
 import Application from "components/Application";
-import { getByText } from "@testing-library/react";
 import { prettyDOM } from "@testing-library/react";
 
 afterEach(cleanup);
