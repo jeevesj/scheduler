@@ -65,7 +65,7 @@ export default function Appointment(props) {
   }
   
   return (
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SHOW && (
@@ -96,7 +96,7 @@ export default function Appointment(props) {
       {mode === DELETING && <Status message="Deleting" />}
       {mode === CONFIRM && (
         <Confirm
-        message="Are you sure you would like to delete this appointment?"
+        message="Are you sure you would like to delete?"
         onConfirm={confirmDelete}
         onCancel={back}
         />
@@ -109,7 +109,7 @@ export default function Appointment(props) {
       )}
       {mode === ERROR_DELETE && (
         <Error
-          message="Could not delete appointment."
+          message="Could not cancel appointment."
           onClose={back}
         />
       )}
