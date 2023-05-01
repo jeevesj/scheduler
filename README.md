@@ -6,9 +6,9 @@ The Scheduler project is a single-page appointment scheduling application built 
 
 ## Booking an appointment has never been easier!
 
-!["booking an appointment"]()
+!["booking an appointment"](https://github.com/jeevesj/scheduler/blob/master/docs/booking.JPG?raw=true)
 
-!["gotta cancel this time"]()
+!["gotta cancel this time"](https://github.com/jeevesj/scheduler/blob/master/docs/schdule%20delete.JPG?raw=true)
 
 
 ## Setup
